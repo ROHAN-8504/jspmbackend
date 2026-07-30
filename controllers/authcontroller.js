@@ -1,4 +1,6 @@
 let users=require('../models/usermodel')
+const bcrypt=require('bcrypt')
+let mail=require('../utils/gmail')
 exports.createaccount=async (req,res)=>{
 const {username,password,email,role}=req.body
     
@@ -9,8 +11,13 @@ const {username,password,email,role}=req.body
   //c1-check whether user exist or not
   if(isuserfound) return res.json({msg:"user alreday exists"})
 
-  await  users.create({username,password,email,role})
+    //convert the pasword into hash passwords
+   let hashedpassword=await bcrypt.hash(password,10)
+
+  await  users.create({username,password:hashedpassword,email,role})
 
   res.json({msg:"registration succesfull"})
+
+  mail(email,username)
   
 }
