@@ -20,3 +20,19 @@ exports.bulkproducts=async (req,res)=>{
     res.json({msg:error.message})
    }
 }
+
+exports.deleteproduct=async (req,res)=>{
+    try {
+       let productid= req.params.id
+        await productsmodel.findByIdAndDelete(productid)
+        res.json({"msg":"product deleted"})
+    } catch (error) {
+        res.json({msg:error.message})
+    }
+}
+
+exports.updateproduct=async (req,res)=>{
+   let productid= req.params.id
+await productsmodel.findByIdAndUpdate(productid,req.body)
+res.json({"msg":"product updated"})
+}
