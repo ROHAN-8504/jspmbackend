@@ -1,6 +1,7 @@
 let users=require('../models/usermodel')
 const bcrypt=require('bcrypt')
 let mail=require('../utils/gmail')
+let jwt=require('jsonwebtoken')
 exports.createaccount=async (req,res)=>{
 const {username,password,email,role}=req.body
     
@@ -16,7 +17,15 @@ const {username,password,email,role}=req.body
 
   await  users.create({username,password:hashedpassword,email,role})
 
-  res.json({msg:"registration succesfull"})
+  //token 
+  let payload={userid:username,useremail:email}
+
+
+  let token=await jwt.sign(payload,process.env.SECRETKEY,{expiresIn:'7d'})
+
+
+  res.json({msg:"registration succesfull",token})
+
 
   mail(email,username)
   
