@@ -30,3 +30,16 @@ const {username,password,email,role}=req.body
   mail(email,username)
   
 }
+
+exports.login=async (req,res)=>{
+const {email,password}=req.body
+
+if(!email  || !password) return res.json({msg:"missing fields"})
+let userfound=await users.findOne({email})
+if(!userfound) return res.json({"msg":"user not found"})
+    
+  let checkpassword=await bcrypt.compare(password,userfound.password)
+  if(!checkpassword) return  res.json({"msg":"email or password is incorrect"})
+
+    res.json({msg:"login succesfull"})
+}

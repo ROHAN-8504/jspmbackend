@@ -5,13 +5,16 @@ const dotenv=require('dotenv')
 dotenv.config();
 const cors=require('cors')
 let logging=require('./middlewares/logger')
+let ratelimit=require('./middlewares/ratelimit')
 let connection=require('./config/db')
 let productsroutes=require('./routes/productroutes')
 let authroutes=require('./routes/authroutes')
 //middlewares
 app.use(express.json())
 app.use(cors())
+app.use(ratelimit)
 app.use(logging)
+
 
 //routes
 app.use('/products',productsroutes)
