@@ -3,6 +3,7 @@ const express=require('express')
 const app=express();
 const dotenv=require('dotenv')
 let helmet=require('helmet')
+let compression=require('compression')
 dotenv.config();
 const cors=require('cors')
 let logging=require('./middlewares/logger')
@@ -14,8 +15,9 @@ let authroutes=require('./routes/authroutes')
 app.use(express.json())
 app.use(cors())
 app.use(ratelimit)
-app.use(logging)z
-ap.use(helmet())
+app.use(logging)
+app.use(compression())
+app.use(helmet())
 
 app.disable('x-powered-by');
 
